@@ -5,24 +5,24 @@ email: zeng_bin8888@163.com
 create_dt: 2023/4/3 14:45
 describe: 信号观察页面
 """
+import os
+os.environ['czsc_research_cache'] = r'./CZSC投研共享数据'
 import czsc
 import numpy as np
 import pandas as pd
 import streamlit as st
-import tushare as ts
 from datetime import timedelta
 from czsc.utils import sorted_freqs
-from src.ts_connector import get_raw_bars, get_symbols
+from czsc.connectors.research import get_raw_bars, get_symbols
 
-if st.secrets.get('ts_token', None):
-    ts.set_token(st.secrets.get('ts_token'))
+st.set_page_config(layout="wide")
+
 
 params = st.experimental_get_query_params()
 default_signals_module = params['signals_module'][0] if 'signals_module' in params else "czsc.signals"
 default_conf = params['conf'][0] if 'conf' in params else "日线_RBreaker_BS辅助V230326_做多_反转_任意_0"
 default_freqs = params['freqs'] if 'freqs' in params else ['30分钟', '日线', '周线']
 
-st.set_page_config(layout="wide")
 signals_module = st.sidebar.text_input("信号模块名称：", value=default_signals_module)
 parser = czsc.SignalsParser(signals_module=signals_module)
 
@@ -46,7 +46,7 @@ with st.sidebar:
     st.header("信号配置")
     with st.form("my_form"):
         conf = st.text_input("请输入信号：", value=default_conf)
-        symbol_group = st.selectbox("请选择分组：", ['index', 'stock', 'etfs'], index=0)
+        symbol_group = st.selectbox("请选择分组：", ['A股主要指数'], index=0)
         symbol = st.selectbox("请选择股票：", get_symbols(symbol_group), index=0)
         freqs = st.multiselect("请选择周期：", sorted_freqs, default=default_freqs)
         freqs = czsc.freqs_sorted(freqs)
