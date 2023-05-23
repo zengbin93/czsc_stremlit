@@ -46,8 +46,7 @@ with st.sidebar:
     st.header("信号配置")
     with st.form("my_form"):
         conf = st.text_input("请输入信号：", value=default_conf)
-        symbol_group = st.selectbox("请选择分组：", ['A股主要指数'], index=0)
-        symbol = st.selectbox("请选择股票：", get_symbols(symbol_group), index=0)
+        symbol = st.selectbox("请选择股票：", get_symbols('ALL'), index=0)
         freqs = st.multiselect("请选择周期：", sorted_freqs, default=default_freqs)
         freqs = czsc.freqs_sorted(freqs)
         sdt = st.date_input("开始日期：", value=pd.to_datetime('2022-01-01'))
