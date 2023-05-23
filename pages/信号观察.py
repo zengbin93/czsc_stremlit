@@ -92,5 +92,3 @@ def create_kline_chart(symbol, conf, freqs, sdt, edt):
 chart = create_kline_chart(symbol, conf, freqs, sdt, edt)
 st.plotly_chart(chart.fig, use_container_width=True, config=plotly_config)
 st.experimental_set_query_params(signals_module=signals_module, conf=conf, freqs=freqs)
-
-
