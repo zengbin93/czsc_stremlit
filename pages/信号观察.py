@@ -77,7 +77,7 @@ def create_kline_chart(symbol, conf, freqs, sdt, edt):
                                 marker_size=20, marker_color='red', marker_symbol='triangle-up')
 
     # 绘制笔 + 分型
-    c = czsc.CZSC([x for x in bars if edt > x.dt > sdt], max_bi_num=500)
+    c = czsc.CZSC([x for x in bars if edt > x.dt > pd.to_datetime(sdt)], max_bi_num=100)
     bi_list = c.bi_list
     bi1 = [{'dt': x.fx_a.dt, "bi": x.fx_a.fx, "text": x.fx_a.mark.value} for x in bi_list]
     bi2 = [{'dt': bi_list[-1].fx_b.dt, "bi": bi_list[-1].fx_b.fx, "text": bi_list[-1].fx_b.mark.value[0]}]
