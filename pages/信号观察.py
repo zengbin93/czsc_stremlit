@@ -57,9 +57,11 @@ with st.sidebar:
 @st.cache_data(ttl=60*60*24)
 def create_kline_chart(symbol, conf, freqs, sdt, edt):
     # 获取K线，计算信号
-    bars = get_raw_bars(symbol, freqs[0], pd.to_datetime(sdt) - timedelta(days=365*3), edt)
+    _edt = pd.to_datetime(edt)
+    _sdt = pd.to_datetime(sdt)
+    bars = get_raw_bars(symbol, freqs[0], _sdt - timedelta(days=365*3), _edt)
     signals_config = czsc.get_signals_config([conf], signals_module=signals_module)
-    sigs = czsc.generate_czsc_signals(bars, signals_config, df=True, sdt=sdt)
+    sigs = czsc.generate_czsc_signals(bars, signals_config, df=True, sdt=_sdt)
     sigs.drop(columns=['freq', 'cache'], inplace=True)
     cols = [x for x in sigs.columns if len(x.split('_')) == 3]
     assert len(cols) == 1
@@ -77,7 +79,7 @@ def create_kline_chart(symbol, conf, freqs, sdt, edt):
                                 marker_size=20, marker_color='red', marker_symbol='triangle-up')
 
     # 绘制笔 + 分型
-    c = czsc.CZSC([x for x in bars if edt > x.dt > pd.to_datetime(sdt)], max_bi_num=100)
+    c = czsc.CZSC([x for x in bars if _edt > x.dt > _sdt], max_bi_num=100)
     bi_list = c.bi_list
     bi1 = [{'dt': x.fx_a.dt, "bi": x.fx_a.fx, "text": x.fx_a.mark.value} for x in bi_list]
     bi2 = [{'dt': bi_list[-1].fx_b.dt, "bi": bi_list[-1].fx_b.fx, "text": bi_list[-1].fx_b.mark.value[0]}]
@@ -88,6 +90,6 @@ def create_kline_chart(symbol, conf, freqs, sdt, edt):
     return chart
 
 
-chart = create_kline_chart(symbol, conf, freqs, sdt, edt)
-st.plotly_chart(chart.fig, use_container_width=True, config=plotly_config)
+_chart = create_kline_chart(symbol, conf, freqs, sdt, edt)
+st.plotly_chart(_chart.fig, use_container_width=True, config=plotly_config)
 st.experimental_set_query_params(signals_module=signals_module, conf=conf, freqs=freqs)
