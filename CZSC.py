@@ -1,7 +1,7 @@
 import os
 import streamlit as st
 
-st.set_page_config(page_title="知识问答", page_icon="🤖", layout="wide")
+st.set_page_config(page_title="CZSC代码库QA", page_icon="🤖", layout="wide")
 
 
 @st.cache_resource
@@ -20,7 +20,7 @@ def initialize_model(model_name='qwen-max-1201', api_key=None, api_base=None):
 
     retriever = db.as_retriever()
     retriever.search_kwargs['distance_metric'] = 'cos'
-    retriever.search_kwargs['k'] = 20
+    retriever.search_kwargs['k'] = 5
     model = ChatOpenAI(model=model_name)
     qa = RetrievalQA.from_llm(model, retriever=retriever)
     return qa
@@ -42,7 +42,7 @@ def show_kbqa():
     api_help = "任何支持 OpenAI API 的模型都可以使用。API_KEY 和 API_BASE 必须同时提供，否则使用默认值。"
     api_key = c1.text_input(label="请输入API_KEY", value="使用默认值", help=api_help)
     api_base = c2.text_input(label="请输入API_BASE", value="使用默认值", help=api_help)
-    model_name = c3.selectbox(label="请选择模型", options=['Baichuan2', 'qwen-max-1201', 'gpt-4'], index=0)
+    model_name = c3.selectbox(label="请选择模型", options=['Baichuan2', 'qwen-max-1201', 'gpt-3.5-turbo', 'gpt-4'], index=0)
     if c4.button("清空历史消息"):
         st.session_state.messages = []
     if c5.button("微信捐赠支持，接GPT4"):
