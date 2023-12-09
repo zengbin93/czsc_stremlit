@@ -18,13 +18,10 @@ def initialize_model(model_name='qwen-max-1201', api_key=None, api_base=None):
     embeddings = OpenAIEmbeddings()
     db = DeepLake(dataset_path='hub://zengbin93/czsc', read_only=True, embedding_function=embeddings)
 
-    # db = DeepLake(dataset_path='hub://zengbin93/czsc', read_only=True)
     retriever = db.as_retriever()
     retriever.search_kwargs['distance_metric'] = 'cos'
     retriever.search_kwargs['k'] = 20
-
-    # model_names = ['gpt-3.5-turbo', 'qwen-max-1201', 'gpt-4', 'Baichuan2']
-    model = ChatOpenAI(model=model_name)           # 'gpt-3.5-turbo', 'qwen-max-1201', 'gpt-4', 'Baichuan2'
+    model = ChatOpenAI(model=model_name)
     qa = RetrievalQA.from_llm(model, retriever=retriever)
     return qa
 
@@ -38,18 +35,22 @@ def show_kbqa():
     2. https://docs.streamlit.io/knowledge-base/tutorials/build-conversational-apps
 
     """
+    allow_gpt4_users = st.secrets['allow_gpt4_users']
+
     st.subheader("CZSC代码库QA", divider="rainbow")
     c1, c2, c3, c4, c5 = st.columns([3, 3, 3, 1, 1])
     api_help = "任何支持 OpenAI API 的模型都可以使用。API_KEY 和 API_BASE 必须同时提供，否则使用默认值。"
     api_key = c1.text_input(label="请输入API_KEY", value="使用默认值", help=api_help)
     api_base = c2.text_input(label="请输入API_BASE", value="使用默认值", help=api_help)
-    # , 'gpt-4', 'Baichuan2'
-    model_name = c3.selectbox(label="请选择模型", options=['gpt-3.5-turbo', 'qwen-max-1201', 'Baichuan2'], index=1)
+    model_name = c3.selectbox(label="请选择模型", options=['Baichuan2', 'qwen-max-1201', 'gpt-4'], index=0)
     if c4.button("清空历史消息"):
         st.session_state.messages = []
     if c5.button("微信捐赠支持，接GPT4"):
         st.success("感谢支持，请加微信：zengbin93，备注：捐赠")
     st.divider()
+    if model_name == 'gpt-4' and st.experimental_user.email not in allow_gpt4_users:
+        st.warning("抱歉，您没有权限使用 GPT-4 模型。GPT-4 模型调用成本较高，需要捐赠支持。请加微信：zengbin93，备注：捐赠")
+        st.stop()
 
     api_key = None if api_key == "使用默认值" else api_key
     api_base = None if api_base == "使用默认值" else api_base
