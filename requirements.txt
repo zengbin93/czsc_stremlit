@@ -1,2 +1,6 @@
 czsc>=0.9.18
 streamlit
+langchain
+deeplake
+openai
+tiktoken

@@ -5,7 +5,7 @@ __pycache__/
 .idea/
 # C extensions
 *.so
-
+*.streamlit/
 # Distribution / packaging
 .Python
 build/
