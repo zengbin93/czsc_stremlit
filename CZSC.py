@@ -49,7 +49,7 @@ def show_kbqa():
         st.success("感谢支持，请加微信：zengbin93，备注：捐赠")
     st.divider()
     if model_name == 'gpt-4' and st.experimental_user.email not in allow_gpt4_users:
-        st.warning("抱歉，您没有权限使用 GPT-4 模型。GPT-4 模型调用成本较高，需要捐赠支持。请加微信：zengbin93，备注：捐赠")
+        st.warning(f"抱歉，您（st.experimental_user.email）没有权限使用 GPT-4 模型。GPT-4 模型调用成本较高，需要捐赠支持。请加微信：zengbin93，备注：捐赠")
         st.stop()
 
     api_key = None if api_key == "使用默认值" else api_key
