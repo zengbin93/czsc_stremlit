@@ -1,4 +1,4 @@
-czsc>=0.9.18
+czsc>=0.9.43
 streamlit
 langchain
 deeplake
