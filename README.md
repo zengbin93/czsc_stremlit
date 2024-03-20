@@ -4,7 +4,7 @@
 #### 构建Docker镜像(注意后面的".")
 docker build -t czsc-stremlit:0.0.1 .
 #### 根据镜像创建容器
-docker run -d -p 8501:8501 --name czsc-stremlit czsc-stremlit:0.0.1
+docker run -d -p 8501:80 --name czsc-stremlit czsc-stremlit:0.0.2
 
 docker run -d -p 8501:8501 --env OPENAI_API_KEY='xxx' --env OPENAI_API_BASE='' --env ACTIVELOOP_TOKEN='' --name czsc-stremlit czsc-stremlit:0.0.1
 

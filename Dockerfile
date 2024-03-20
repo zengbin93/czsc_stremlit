@@ -16,4 +16,4 @@ RUN apt-get -y update && \
     rm -rf ta-lib-0.4.0-src.tar.gz
 RUN pip install ta-lib  && pip3 install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 EXPOSE 80
-CMD ["streamlit", "run", "CZSC.py", "--server.port", "80", "----server.maxUploadSize", "1024"]
+CMD ["streamlit", "run", "CZSC.py", "--server.port", "80", "--server.maxUploadSize", "1024"]
