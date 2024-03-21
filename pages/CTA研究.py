@@ -1,9 +1,11 @@
 import os
 # os.environ['czsc_max_bi_num'] = '20'
+os.environ['czsc_research_cache'] = r'./CZSC投研共享数据'
 import czsc
 import json
 import glob
 import hashlib
+import dotenv
 import numpy as np
 import pandas as pd
 import streamlit as st

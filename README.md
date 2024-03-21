@@ -27,13 +27,8 @@ streamlit run CZSC.py
 docker build -t czsc-stremlit:0.0.1 .
 
 # 运行镜像
-docker run -d -p 8501:8501
-    --volume /opt/.streamlit/secrets.toml:/app/.streamlit/secrets.toml \
-    --env OPENAI_API_KEY='xxx' \
-    --env OPENAI_API_BASE='xxx' \
-    --env ACTIVELOOP_TOKEN='xxx' \
-    --name czsc-stremlit 
-    czsc-stremlit:0.0.1
+# docker run -d -p 8501:80 --volume .streamlit/secrets.toml:/app/.streamlit/secrets.toml --name czsc-stremlit czsc-stremlit:0.0.1
+docker run -d -p 8501:80 --name czsc-stremlit czsc-stremlit:0.0.1
 
 ########## 以下为Docker常用的命令 ##########
 # 查看容器日志
