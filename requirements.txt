@@ -5,3 +5,5 @@ deeplake
 openai
 tiktoken
 python-dotenv
+streamlit_option_menu
+stqdm

@@ -1,38 +1,30 @@
 version: '3.7'
 
-x-environment: &common-environment
-  OPENAI_API_KEY: "OPENAI_API_KEY_VALUE"
-  OPENAI_API_BASE: "OPENAI_API_BASE_VALUE"
-  ACTIVELOOP_TOKEN: "ACTIVELOOP_TOKEN_VALUE"
-
 services:
   czsc-stremlit_1:
     image: czsc-stremlit:0.0.1
     container_name: czsc-stremlit_1
-    environment:
-      <<: *common-environment
     volumes:
       - data-volume:/app/market-data
+      - streamlit-config-volume:/app/.streamlit
     expose:
       - "80"
 
   czsc-stremlit_2:
     image: czsc-stremlit:0.0.1
     container_name: czsc-stremlit_2
-    environment:
-      <<: *common-environment
     volumes:
       - data-volume:/app/market-data
+      - streamlit-config-volume:/app/.streamlit
     expose:
       - "80"
 
   czsc-stremlit_3:
     image: czsc-stremlit:0.0.1
     container_name: czsc-stremlit_3
-    environment:
-      <<: *common-environment
     volumes:
       - data-volume:/app/market-data
+      - streamlit-config-volume:/app/.streamlit
     expose:
       - "80"
 
@@ -54,3 +46,9 @@ volumes:
       type: 'none'
       o: 'bind'
       device: 'D:/data/czsc_stremlit-data'
+  streamlit-config-volume:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: 'D:/data/czsc_stremlit-config'
