@@ -26,6 +26,9 @@ on:
 # Environment variables available to all jobs and steps in this workflow.
 env:
   TAG: ${{ github.sha }}
+  REGISTRY: ${{ secrets.REGISTRY }}
+  NAMESPACE: ${{ secrets.NAMESPACE }}
+  IMAGE: ${{ secrets.IMAGE }}
 permissions:
   contents: read
 
